@@ -7,7 +7,7 @@ using System.IO;
 
 namespace EmulationStation
 {
-    class Game
+    public class Game
     {
         public Game(string _path)
         {

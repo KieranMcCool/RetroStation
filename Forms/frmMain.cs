@@ -18,7 +18,6 @@ namespace EmulationStation
         public frmMain()
         {
             InitializeComponent();
-
             reload();
 
             this.WindowState = FormWindowState.Maximized;
@@ -35,7 +34,9 @@ namespace EmulationStation
 
             bulkFromDirectoryToolStripMenuItem.Click += BulkFromDirectoryToolStripMenuItem_Click;
             fromFileToolStripMenuItem.Click += (sender, e) => Program.Games.Add(new Game("**add:ing**"));
-            managePlatformsToolStripMenuItem.Click += (sender, e) => { new frmAddPlatform().ShowDialog(); reload(); };
+            managePlatformsToolStripMenuItem.Click += (sender, e) => {
+                frmPlatManager fp = new frmPlatManager();
+                fp.ShowDialog();  reload(); };
         }
 
         private void Ci_ButtonPressed(string[] actions, string[] buttonsPressed)

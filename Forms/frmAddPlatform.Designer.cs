@@ -198,7 +198,7 @@
             this.Controls.Add(this.tbFName);
             this.Controls.Add(this.label1);
             this.Name = "frmAddPlatform";
-            this.Text = "frmAddPlatform";
+            this.Text = "Add Platform";
             this.ResumeLayout(false);
             this.PerformLayout();
 

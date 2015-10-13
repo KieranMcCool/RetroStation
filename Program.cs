@@ -96,10 +96,21 @@ namespace EmulationStation
             return null;
         }
 
+        public static void removePlatform(int p)
+        {
+            Platforms.RemoveAt(p);
+            File.Delete(platInfoDir);
+            foreach (var v in Platforms)
+                addPlatform(v, false);
+            loadSupported();
+        }
+
         public static void addPlatform(Platform p, bool reload = true)
         {
             using (var sw = new StreamWriter(platInfoDir, true))
-                sw.WriteLine("\n" + p.getCSVLine());
+            {
+                sw.Write(p.getCSVLine() + "\n");
+            }
             if (reload)
                 loadSupported();
         }

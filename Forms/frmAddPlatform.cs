@@ -17,6 +17,16 @@ namespace EmulationStation
             InitializeComponent();
         }
 
+        public frmAddPlatform(Platform p)
+        {
+            InitializeComponent();
+            tbCLI.Text = p.getCommandTemplate();
+            tbDir.Text = p.getEmulatorPath();
+            tbFName.Text = p.getFriendlyName();
+            foreach (var v in p.getFileExtension())
+                lbExtensions.Items.Add(v);
+        }
+
         private string formatExtension(string s)
         {
             return s.Replace("*", "").Replace(".", "").ToLower();

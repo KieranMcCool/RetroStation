@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EmulationStation
 {
-    class Platform
+    public class Platform
     {
         public Platform(List<string> Info)
         {
