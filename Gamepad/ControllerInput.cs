@@ -43,7 +43,7 @@ namespace EmulationStation
             string path = Environment.CurrentDirectory + @"/Resources/Controls.cfg";
             using (StreamWriter sw = new StreamWriter(path))
                 foreach(var v in Actions)
-                    sw.WriteLine(v.Key + string.Join(",", v.Value));
+                    sw.WriteLine(v.Key + ":" + string.Join(",", v.Value));
         }
 
         private void mainLoop()
