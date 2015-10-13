@@ -1,0 +1,4 @@
+PS2,\Emulators\PSX2\pcsx2-r5875.exe,"{0}",iso
+N64,\Emulators\Mupen64Plus\mupen64plus.exe,--fullscreen "{0}",n64,v64
+GC,\Emulators\Dolphin\Dolphin.exe,-e "{0}",iso,gcm
+GB/GBA,\Emulators\Mednafen\mednafen.exe,"{0}",gba,gb,vba,vb
