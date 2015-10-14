@@ -1,6 +1,6 @@
 # RetroStation - Kieran McCool
 
-[Download Latest Version]()
+[Download Latest Version](https://github.com/KieranMcCool/RetroStation/blob/master/Versions/RetroStationLatest.zip?raw=true)
 
 ## What is RetroStation?
 
