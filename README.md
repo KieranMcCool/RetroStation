@@ -2,6 +2,9 @@
 
 [Download Latest Version](https://github.com/KieranMcCool/RetroStation/blob/master/Versions/RetroStationLatest.zip?raw=true)
 
+**Note: Very early release, getting this working might be a challenge just now. 
+Optimizations and fixes coming soon.
+
 ## What is RetroStation?
 
 RetroStation is an open source program designed to act as a graphical front-end for
@@ -53,6 +56,17 @@ to port this to Linux eventually (running under Mono) but I can't get OpenTK to 
 Mono. I'm currently using SharpDX as it's easier to work with than OpenTK and since
 neither will work on Mono under Linux it makes sense to use the easiest solution since
 'm gaining nothing from using OpenTK.
+
+## Currently no remapping for controls (coming soon)
+
+As a result, here are the default controls for using a controller:
+* DPadUp - Move upward through the games list.
+* DPadDown - Move down through the games list.
+* Left Shoulder - Cycle through the Platform filter to the left.
+* Right Shoulder - Cycle through the Platform filter to the right.
+* A Button - Launch the selected game.
+* Start, Back/Select, LeftShoulder & Right Shoulder - Exits the running emulation (if one is 
+running) and returns you to the program.
 
 
 ## When will you support Linux?
