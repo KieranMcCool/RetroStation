@@ -18,7 +18,7 @@ Custom command line arguments can be created to allow more control over how the 
 works but make sure you include "{0}" in it somewhere as this is what is replaced with
 the ROM files path.
 
-## There are hundred of GUI front-ends for emulators, why RetroStation?
+## There are hundreds of GUI front-ends for emulators, why RetroStation?
 
 Use what you like, I made this because I couldn't find one that suited my needs. They
 were all either too much hassle to set up, lacked decent controller support or were
