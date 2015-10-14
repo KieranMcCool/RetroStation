@@ -3,7 +3,7 @@
 [Download Latest Version](https://github.com/KieranMcCool/RetroStation/blob/master/Versions/RetroStationLatest.zip?raw=true)
 
 **Note: Very early release, getting this working might be a challenge just now. 
-Optimizations and fixes coming soon.
+Optimizations and fixes coming soon.**
 
 ## What is RetroStation?
 
