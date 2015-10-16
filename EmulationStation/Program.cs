@@ -143,10 +143,24 @@ namespace EmulationStation
         private static bool updateCheck()
         {
             string version;
+            string onlineVersion;
+            bool debug = false;
+#if DEBUG
+            debug = true;
+#endif
+            // We don't want to update every time we debug the program as this will revert.
+            if (debug)
+                return true;
+
             using (var sr = new StreamReader(Environment.CurrentDirectory + @"\Resources\BuildDate.txt"))
                 version = sr.ReadToEnd();
-            using(var wc = new System.Net.WebClient())
-            return true;
+            using (var wc = new System.Net.WebClient())
+                onlineVersion = 
+                    wc.DownloadString(@"https://raw.githubusercontent.com/KieranMcCool/RetroStation/master/Versions/RetroStationLatest/Resources/BuildDate.txt");
+            if (version == onlineVersion)
+                return true;
+            else
+                throw new NotImplementedException();
         }
 
         private static bool platformsCheck()
