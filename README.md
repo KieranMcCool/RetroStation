@@ -13,7 +13,7 @@ emulators allowing basic statistics tracking and easy ROM management.
 ## How does it work?
 
 You set the program up with platforms, each platform has an associated ROM type and
-emulator which it will use to run it's ROMs. You can set up as many platforms as you
+emulator which it will use to run its ROMs. You can set up as many platforms as you
 like and the ROM files are passed in to the emulator through the use of command line
 arguments so you'll need to make sure your emulator supports that feature (most do.)
 
@@ -26,17 +26,15 @@ the ROM files path.
 Use what you like, I made this because I couldn't find one that suited my needs. They
 were all either too much hassle to set up, lacked decent controller support or were
 useless if you were using anything other than a controller. I believe I've hit a decent
-middle ground here. It's the jack of all trades (and the master of none) I haven't
-invested too much effort into making a fancy GUI that has big icons and fancy text for
-using a controller, nor have I created lots of nested menus with configurable options to
-maximize customization and features when using the keyboard and mouse.
+middle ground with this solution. It's designed to be manageable using a controller or a
+keyboard and mouse. *Some of the more advanced features are only accessible using the
+mouse though.* 
 
-It's just a simple, easy to use interface which can use both a keyboard and mouse or a
-controller as the situation requires.
+It's just a simple, easy to use interface that gets the job done.
 
 It's also very easy to set up allowing batch imports of ROM files, where you can dump
-all of your ROMs in one folder and import them easily often without having to provide
-any more input. EZPZ.
+all of your ROMs in one folder and import them easily, if you have all your platforms
+setup then you may not even need to provide any more input. EZPZ.
 
 ## Which emulators does it support?
 
@@ -51,11 +49,12 @@ with most but some may require some tweaking, in any case: Google is your best f
 
 **Yes.**
 
-It's a bit clunky and I'm still torn on whether to use OpenTK.Input or SharpDx. I want
-to port this to Linux eventually (running under Mono) but I can't get OpenTK to work on
-Mono. I'm currently using SharpDX as it's easier to work with than OpenTK and since
-neither will work on Mono under Linux it makes sense to use the easiest solution since
-'m gaining nothing from using OpenTK.
+I'm currently using a library called [SharpDX](http://sharpdx.org/) for controller input, eventually I hope
+to move to something which will work cross-platform so I can port this program to Linux
+and OSX under the Mono framework. As of now, the program will compile under Mono but
+since SharpDX is a wrapper for DirectX's xInput the module will not work on anything
+other than Windows. Hopefully this can change in the future when I find a library which
+will work all platforms.
 
 ## Currently no remapping for controls (coming soon)
 
@@ -71,9 +70,8 @@ running) and returns you to the program.
 
 ## When will you support Linux?
 
-As soon as I can get OpenTK working with Mono or find some other library which suits my
-needs. I don't want to give Linux users a half working product. Go hard or go home, you
-get it all or you don't.
+As soon as I can get the controller input working with Mono.
+I don't want to give Linux users a half working product.
 
 So until I can support it fully I'm afraid you're out of luck. The basic program does
 work using Wine though which may be some (small) consolation.
@@ -97,4 +95,13 @@ I found out their project existed. The work they've done is great and I urge you
 check them out if you find this program to be inadequate for your needs. 
 
 If the developers of EmulationStation stumble on this program and wish to contact me with any
-concerns then please don't hesitate. No harm is intended.
+concerns then please don't hesitate. 
+
+No harm is intended.
+
+## Libraries Used
+
+* [SharpDX](http://sharpdx.org/) - MIT License
+	- Used for controller input. 
+* [7-Zip](http://www.7-zip.org) - GNU LGPL License
+	- Used in auto-updater for unzipping new versions.
