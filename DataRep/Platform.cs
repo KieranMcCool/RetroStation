@@ -35,7 +35,7 @@ namespace EmulationStation
         public Platform(List<string> Info)
         {
             friendlyName = Info[0];
-            emulatorPath = Environment.CurrentDirectory + Info[1];
+            emulatorPath =  Info[1].Replace(Environment.CurrentDirectory, "");
             commandTemplate = Info[2];
             fileExtension = Info.GetRange(3, Info.Count - 3).ToArray();
         }
@@ -82,11 +82,20 @@ namespace EmulationStation
                 StartInfo = new ProcessStartInfo()
                 {
                     WindowStyle = ProcessWindowStyle.Normal,
-                    FileName = this.getEmulatorPath(),
                     Arguments = command,
-                    WorkingDirectory = new FileInfo(this.getEmulatorPath()).Directory.FullName
                 }
             };
+
+            string emuPath;
+
+            if (File.Exists(Environment.CurrentDirectory + this.getEmulatorPath()))
+                emuPath = Environment.CurrentDirectory + this.getEmulatorPath();
+            else
+                emuPath = this.getEmulatorPath();
+
+            Program.Play.StartInfo.FileName = emuPath;
+            Program.Play.StartInfo.WorkingDirectory = new FileInfo(emuPath).Directory.FullName;
+
             Program.Play.Start();
             var startTime = DateTime.Now;
             Program.Play.WaitForExit();

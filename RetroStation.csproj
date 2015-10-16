@@ -153,9 +153,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Resources\PlatformInfo.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="Resources\PlatformInfo.csv" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

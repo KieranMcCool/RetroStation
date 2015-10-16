@@ -47,6 +47,7 @@ namespace EmulationStation
             loadGames();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            startupChecks();
             Application.Run(new frmMain());
         }
 
@@ -135,6 +136,20 @@ namespace EmulationStation
             }
             if (reload)
                 loadSupported();
+        }
+
+        private static void startupChecks()
+        {
+            if (File.Exists(platInfoDir))
+                return;
+            else
+            {
+                MessageBox.Show("No Platforms found.\nPlatform must be created to proceed.");
+                frmAddPlatform addP = new frmAddPlatform();
+                if (addP.ShowDialog() == DialogResult.OK)
+                    return;
+                startupChecks();
+            }
         }
     }
 }
