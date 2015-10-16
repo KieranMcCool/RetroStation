@@ -142,7 +142,11 @@ namespace EmulationStation
 
         private static bool updateCheck()
         {
-            return false;
+            string version;
+            using (var sr = new StreamReader(Environment.CurrentDirectory + @"\Resources\BuildDate.txt"))
+                version = sr.ReadToEnd();
+            using(var wc = new System.Net.WebClient())
+            return true;
         }
 
         private static bool platformsCheck()
