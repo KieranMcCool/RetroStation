@@ -31,11 +31,6 @@ namespace EmulationStation
 {
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        /// 
-
         public static List<Platform> Platforms = new List<Platform>();
         public static List<Game> Games = new List<Game>();
         public static System.Diagnostics.Process Play;
@@ -43,12 +38,14 @@ namespace EmulationStation
         [STAThread]
         static void Main()
         {
-            loadSupported();
-            loadGames();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            startupChecks();
-            Application.Run(new frmMain());
+            if (startupChecks())
+            {
+                loadSupported();
+                loadGames();
+                Application.Run(new frmMain());
+            }
         }
 
         public static string platInfoDir = "Resources\\PlatformInfo.csv";
@@ -109,11 +106,11 @@ namespace EmulationStation
                     if (dialog.ShowDialog() == DialogResult.OK)
                         return platforms[dialog.result].getFriendlyName();
                 }
-            if(MessageBox.Show(string.Format("No Platform found for file {0}\nDo you want to select one?",
+            if (MessageBox.Show(string.Format("No Platform found for file {0}\nDo you want to select one?",
                 fileName), "Message", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 dialog = new frmPlatformChoose(friendlyPlatName(Platforms), fi.Name);
-                if(dialog.ShowDialog() == DialogResult.OK)
+                if (dialog.ShowDialog() == DialogResult.OK)
                     return Platforms[dialog.result].getFriendlyName();
             }
             return null;
@@ -138,17 +135,27 @@ namespace EmulationStation
                 loadSupported();
         }
 
-        private static void startupChecks()
+        private static bool startupChecks()
+        {
+            return updateCheck() && platformsCheck();
+        }
+
+        private static bool updateCheck()
+        {
+            return false;
+        }
+
+        private static bool platformsCheck()
         {
             if (File.Exists(platInfoDir))
-                return;
+                return true;
             else
             {
                 MessageBox.Show("No Platforms found.\nPlatform must be created to proceed.");
                 frmAddPlatform addP = new frmAddPlatform();
                 if (addP.ShowDialog() == DialogResult.OK)
-                    return;
-                startupChecks();
+                    return true;
+                return false;
             }
         }
     }
