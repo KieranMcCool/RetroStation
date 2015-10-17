@@ -227,3 +227,11 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+# ROM Directory
+[Bb]in/
+ROMs/
+ROMS/
+roms/
+Emulators/
+EMULATORS/

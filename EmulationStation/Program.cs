@@ -145,23 +145,19 @@ namespace EmulationStation
             var wc = new System.Net.WebClient();
             string version;
             string onlineVersion;
-            bool debug = false;
 //#if DEBUG
-//            debug = true;
+//          return true; // We don't want to update every time we debug the program as this will revert.
 //#endif
-            // We don't want to update every time we debug the program as this will revert.
-            if (debug)
-                return true;
+
             string versionInfoURL = @"https://raw.githubusercontent.com/KieranMcCool/RetroStation/master/Versions/RetroStationLatest/Resources/BuildDate.txt";
-            string versionArchiveURL = @"https://github.com/KieranMcCool/RetroStation/blob/master/Versions/RetroStationLatest.zip?raw=true";
             using (var sr = new StreamReader(Environment.CurrentDirectory + @"\Resources\BuildDate.txt"))
                 version = sr.ReadToEnd();
-                onlineVersion = wc.DownloadString(versionInfoURL);
+            
+            onlineVersion = wc.DownloadString(new Uri(versionInfoURL));
             if (version == onlineVersion)
                 return true;
             else
             {
-                wc.DownloadFile(versionArchiveURL, "DL.zip");
                 System.Diagnostics.Process p = new System.Diagnostics.Process();
                 p.StartInfo = new System.Diagnostics.ProcessStartInfo()
                 {

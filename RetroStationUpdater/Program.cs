@@ -14,22 +14,45 @@ namespace RetroStationUpdater
     {
         static void Main(string[] args)
         {
-            if (File.Exists(Environment.CurrentDirectory + @"\DL.zip"))
+            Console.WriteLine("Downloading Update...");
+            downloadUpdate();
+            Console.WriteLine("Downloading Complete.");
+            Console.WriteLine("Exctracting...");
+            ExtractZipFile(Environment.CurrentDirectory + @"\DL.zip", "tmp");
+            Console.WriteLine("Overwriting Old Version....");
+            replaceOldFiles();
+            Console.WriteLine("Cleaning Up...");
+            cleanUp();
+            Console.WriteLine("Done.");
+
+            System.Diagnostics.Process p = new System.Diagnostics.Process()
             {
-                ExtractZipFile(Environment.CurrentDirectory + @"\DL.zip", "\tmp");
-            }
+                StartInfo = new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = "RetroStation.exe"
+                }
+            };
+            p.Start();
         }
+
+        private static void downloadUpdate()
+        {
+            string versionArchiveURL = @"https://raw.githubusercontent.com/KieranMcCool/RetroStation/master/Versions/RetroStationLatest.zip";
+            using (var wc = new System.Net.WebClient())
+                wc.DownloadFile(new Uri(versionArchiveURL), @"DL.zip");
+        }
+
 
         private static void replaceOldFiles()
         {
-            foreach (string s in Directory.GetFiles("\tmp"))
+            foreach (string s in Directory.GetFiles("tmp"))
             {
                 FileInfo fi = new FileInfo(s);
                 File.Copy(s, fi.Name, true);
             } 
         }
 
-        private void cleanUp()
+        private static void cleanUp()
         {
             File.Delete("DL.zip");
             Directory.Delete("\tmp");
