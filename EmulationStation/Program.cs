@@ -26,6 +26,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace EmulationStation
 {
@@ -145,26 +147,29 @@ namespace EmulationStation
             var wc = new System.Net.WebClient();
             string version;
             string onlineVersion;
-//#if DEBUG
-//          return true; // We don't want to update every time we debug the program as this will revert.
-//#endif
 
             string versionInfoURL = @"https://raw.githubusercontent.com/KieranMcCool/RetroStation/master/Versions/RetroStationLatest/Resources/BuildDate.txt";
             using (var sr = new StreamReader(Environment.CurrentDirectory + @"\Resources\BuildDate.txt"))
-                version = sr.ReadToEnd();
+            { version = sr.ReadToEnd(); sr.Close(); sr.Dispose(); }
             
             onlineVersion = wc.DownloadString(new Uri(versionInfoURL));
             if (version == onlineVersion)
-                return true;
+                return false;
             else
             {
-                System.Diagnostics.Process p = new System.Diagnostics.Process();
-                p.StartInfo = new System.Diagnostics.ProcessStartInfo()
+                if (MessageBox.Show("Update Available, Do you want to update?", "Updater", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    FileName = "RetroStationUpdater.exe"
-                };
-                p.Start();
-                return false;
+                    downloadUpdate();
+                    ExtractZipFile(Environment.CurrentDirectory + @"\DL.zip", "tmp");
+
+                    System.Diagnostics.Process p = new System.Diagnostics.Process();
+                    p.StartInfo = new System.Diagnostics.ProcessStartInfo()
+                    {
+                        FileName = "RetroStationUpdater.exe"
+                    };
+                    p.Start();
+                }
+                return true;
             }
         }
 
@@ -179,6 +184,52 @@ namespace EmulationStation
                 if (addP.ShowDialog() == DialogResult.OK)
                     return true;
                 return false;
+            }
+        }
+
+        private static void downloadUpdate()
+        {
+            string versionArchiveURL = @"https://raw.githubusercontent.com/KieranMcCool/RetroStation/master/Versions/RetroStationLatest.zip";
+            using (var wc = new System.Net.WebClient())
+                wc.DownloadFile(new Uri(versionArchiveURL), @"DL.zip");
+        }
+
+        private static void ExtractZipFile(string archiveFilenameIn, string outFolder)
+        {
+            ZipFile zf = null;
+            try
+            {
+                FileStream fs = File.OpenRead(archiveFilenameIn);
+                zf = new ZipFile(fs);
+                foreach (ZipEntry zipEntry in zf)
+                {
+                    if (!zipEntry.IsFile)
+                    {
+                        continue;
+                    }
+                    String entryFileName = zipEntry.Name;
+
+                    byte[] buffer = new byte[4096];
+                    Stream zipStream = zf.GetInputStream(zipEntry);
+
+                    String fullZipToPath = Path.Combine(outFolder, entryFileName);
+                    string directoryName = Path.GetDirectoryName(fullZipToPath);
+                    if (directoryName.Length > 0)
+                        Directory.CreateDirectory(directoryName);
+                    using (FileStream streamWriter = File.Create(fullZipToPath))
+                    {
+                        StreamUtils.Copy(zipStream, streamWriter, buffer);
+                        streamWriter.Close(); streamWriter.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (zf != null)
+                {
+                    zf.IsStreamOwner = true; // Makes close also shut the underlying stream
+                    zf.Close(); // Ensure we release resources
+                }
             }
         }
     }

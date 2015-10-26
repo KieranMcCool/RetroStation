@@ -255,6 +255,7 @@ namespace EmulationStation
             // 
             // pnlGameInfo
             // 
+            this.pnlGameInfo.BackColor = System.Drawing.Color.Maroon;
             this.pnlGameInfo.Controls.Add(this.label2);
             this.pnlGameInfo.Controls.Add(this.btnRemove);
             this.pnlGameInfo.Controls.Add(this.btnPlay);

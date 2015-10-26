@@ -4,9 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using ICSharpCode.SharpZipLib.Core;
-using ICSharpCode.SharpZipLib.Zip;
-
 
 namespace RetroStationUpdater
 {
@@ -14,17 +11,11 @@ namespace RetroStationUpdater
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Downloading Update...");
-            downloadUpdate();
-            Console.WriteLine("Downloading Complete.");
-            Console.WriteLine("Exctracting...");
-            ExtractZipFile(Environment.CurrentDirectory + @"\DL.zip", "tmp");
-            Console.WriteLine("Overwriting Old Version....");
-            replaceOldFiles();
+            Console.WriteLine("Replace Files...");
+            replaceOldFiles(Environment.CurrentDirectory  + "\\tmp");
             Console.WriteLine("Cleaning Up...");
-            cleanUp();
+            cleanUp(Environment.CurrentDirectory + "\\tmp");
             Console.WriteLine("Done.");
-
             System.Diagnostics.Process p = new System.Diagnostics.Process()
             {
                 StartInfo = new System.Diagnostics.ProcessStartInfo
@@ -43,58 +34,35 @@ namespace RetroStationUpdater
         }
 
 
-        private static void replaceOldFiles()
+        private static void replaceOldFiles(string dir)
         {
-            foreach (string s in Directory.GetFiles("tmp"))
+            foreach (string d in Directory.GetDirectories(dir))
             {
-                FileInfo fi = new FileInfo(s);
-                File.Copy(s, fi.Name, true);
-            } 
+                foreach (string f in Directory.GetFiles(d))
+                    File.Copy(f, f.Replace(@"\tmp", ""), true);
+                replaceOldFiles(d);
+            }
         }
-
-        private static void cleanUp()
+            
+        private static void cleanUp(string dir)
         {
-            File.Delete("DL.zip");
-            Directory.Delete("\tmp");
-        }
-
-        private static void ExtractZipFile(string archiveFilenameIn, string outFolder)
-        {
-            ZipFile zf = null;
+            Action<string> DeleteFiles = new Action<string>((s) => 
+                { foreach(string f in Directory.GetFiles(s)) File.Delete(f); });
+            string de = "";
             try
             {
-                FileStream fs = File.OpenRead(archiveFilenameIn);
-                zf = new ZipFile(fs);
-                foreach (ZipEntry zipEntry in zf)
+                foreach (string d in Directory.GetDirectories(dir))
                 {
-                    if (!zipEntry.IsFile)
-                    {
-                        continue;
-                    }
-                    String entryFileName = zipEntry.Name;
-
-                    byte[] buffer = new byte[4096];
-                    Stream zipStream = zf.GetInputStream(zipEntry);
-                    
-                    String fullZipToPath = Path.Combine(outFolder, entryFileName);
-                    string directoryName = Path.GetDirectoryName(fullZipToPath);
-                    if (directoryName.Length > 0)
-                        Directory.CreateDirectory(directoryName);
-                    using (FileStream streamWriter = File.Create(fullZipToPath))
-                    {
-                        StreamUtils.Copy(zipStream, streamWriter, buffer);
-                    }
+                    de = d;
+                    DeleteFiles(d);
+                    Directory.Delete(d);
                 }
             }
-            finally
+            catch (System.Exception excpt)
             {
-                if (zf != null)
-                {
-                    zf.IsStreamOwner = true; // Makes close also shut the underlying stream
-                    zf.Close(); // Ensure we release resources
-                }
+                Console.WriteLine(de);
+                Console.WriteLine(excpt.Message);
             }
         }
-
     }
 }
