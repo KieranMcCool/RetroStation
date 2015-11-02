@@ -27,21 +27,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace EmulationStation
+namespace RetroStation
 {
     public class Game
     {
         public Game(string _path)
         {
-            if (_path != "**add:ing**")
-            { 
-                path = _path;
-                getInfo(_path);
-            }
-            else
-            {
-                added();
-            }
+            path = _path;
+            getInfo(_path);
+        }
+
+        public Game(string[] gameInfo)
+        {
+            addArray(gameInfo);
         }
 
         string friendlyName;
@@ -50,13 +48,6 @@ namespace EmulationStation
         DateTime lastPlayed;
         string path;
         string romPath;
-
-        public void added()
-        {
-            var dialog = new frmAddGameDia();
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                addArray(dialog.results);
-        }
 
         public void addArray(string[] array)
         {
@@ -82,7 +73,7 @@ namespace EmulationStation
                     friendlyName = sr.ReadLine();
                     romPath = sr.ReadLine();
                     string _platform = sr.ReadLine();
-                    platform = Program.Platforms.Find(x => x.getFriendlyName() == _platform);
+                    platform = DataManagement.Platforms.Find(x => x.getFriendlyName() == _platform);
                     secPlayed = long.Parse(sr.ReadLine());
                     lastPlayed = new DateTime(long.Parse(
                         sr.ReadLine()));

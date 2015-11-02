@@ -30,14 +30,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace EmulationStation
+namespace RetroStation
 {
     public partial class frmAddGameDia : Form
     {
         public frmAddGameDia()
         {
             InitializeComponent();
-            foreach (Platform p in Program.Platforms)
+            foreach (Platform p in DataManagement.Platforms)
                 cbPlatform.Items.Add(p.getFriendlyName());
         }
 
@@ -61,7 +61,7 @@ namespace EmulationStation
                 tbPath.Text = fd.FileName;
                 var fi = new System.IO.FileInfo(fd.FileName);
                 tbName.Text = fi.Name.Replace(fi.Extension, "");
-                string p = Program.getPlatform(fd.FileName);
+                string p = DataManagement.getPlatform(fd.FileName);
                 if (p != null)
                     cbPlatform.SelectedItem = p;           
             }

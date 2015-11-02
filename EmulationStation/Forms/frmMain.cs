@@ -31,7 +31,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
-namespace EmulationStation
+namespace RetroStation
 {
     public partial class frmMain : Form
     {
@@ -49,13 +49,19 @@ namespace EmulationStation
             btnPlay.Click += (sender, e) =>
             {
                 int sel = lbGames.SelectedIndex; var p = cbPlatform.SelectedItem; playing = true;
-                Program.Games.Find(x => x.getFriendlyName() == (string)lbGames.SelectedItem).launch();
+                DataManagement.Games.Find(x => x.getFriendlyName() == (string)lbGames.SelectedItem).launch();
                 reload(); lbGames.SelectedIndex = sel; cbPlatform.SelectedItem = p; playing = false;
                 playing = false;
             };
 
             bulkFromDirectoryToolStripMenuItem.Click += BulkFromDirectoryToolStripMenuItem_Click;
-            fromFileToolStripMenuItem.Click += (sender, e) => Program.Games.Add(new Game("**add:ing**"));
+            fromFileToolStripMenuItem.Click += (sender, e) =>
+            {
+                var dia = new frmAddGameDia();
+                if (dia.ShowDialog() == DialogResult.OK)
+                    DataManagement.Games.Add(new Game(dia.results));
+            };
+
             managePlatformsToolStripMenuItem.Click += (sender, e) => {
                 frmPlatManager fp = new frmPlatManager();
                 fp.ShowDialog();  reload(); };
@@ -64,20 +70,16 @@ namespace EmulationStation
         private void Ci_ButtonPressed(string[] actions, string[] buttonsPressed)
         {
             var cycleSelected = new Action<object, int>((s, i) => {
-                try
+                if(s  is ListBox)
                 {
                     var contextS = ((ListBox)s);
                     contextS.BeginInvoke(new MethodInvoker(() =>
                     contextS.SelectedIndex = pyMod(contextS.SelectedIndex + i, contextS.Items.Count)));
-                }
-                catch (InvalidCastException e)
-                {
+                } else {
                     var contextS = (ComboBox)s;
                     contextS.BeginInvoke(new MethodInvoker(() =>
                     contextS.SelectedIndex = pyMod(contextS.SelectedIndex + i, contextS.Items.Count)));
-                    Console.WriteLine(e.Message);
                 }
-                catch { }
             });
             if (!playing)
             {
@@ -115,15 +117,15 @@ namespace EmulationStation
 
         private void reload()
         {
-            Program.loadSupported();
-            Program.loadGames();
+            DataManagement.loadSupported();
+            DataManagement.loadGames();
 
             lbGames.Items.Clear();
             cbPlatform.Items.Clear();
 
             cbPlatform.Items.Add("All");
 
-            foreach (var p in Program.Platforms)
+            foreach (var p in DataManagement.Platforms)
             {
                 cbPlatform.Items.Add(p.getFriendlyName());
             }
@@ -160,7 +162,7 @@ namespace EmulationStation
             {
                 var fi = new FileInfo(s);
                 var g = new Game("**");
-                string platform = Program.getPlatform(s);
+                string platform = DataManagement.getPlatform(s);
                 if (platform != null)
                 {
                     g.addArray(new string[]
@@ -181,12 +183,12 @@ namespace EmulationStation
             lbGames.Items.Clear();
             if (fType == null)
             {
-                foreach (var v in Program.Games)
+                foreach (var v in DataManagement.Games)
                     lbGames.Items.Add(v.getFriendlyName());
             }
             else
             {
-                foreach (var v in Program.Games)
+                foreach (var v in DataManagement.Games)
                     if (v.getPlatform() == fType)
                         lbGames.Items.Add(v.getFriendlyName());
             }
@@ -200,7 +202,7 @@ namespace EmulationStation
                     filterBy(null);
                     break;
                 default:
-                    var filterType = Program.Platforms.Find(x => x.getFriendlyName() ==
+                    var filterType = DataManagement.Platforms.Find(x => x.getFriendlyName() ==
                         (string)cbPlatform.Items[cbPlatform.SelectedIndex]);
                     filterBy(filterType);
                     break;
@@ -209,7 +211,7 @@ namespace EmulationStation
 
         private void lbGames_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var game = Program.Games.Find(x => x.getFriendlyName() == (string)lbGames.SelectedItem);
+            var game = DataManagement.Games.Find(x => x.getFriendlyName() == (string)lbGames.SelectedItem);
 
             lblGameName.Text = game.getFriendlyName();
             label2.Text = FormatTime(new TimeSpan(0, 0, (int)game.getSecondsPlayed()),

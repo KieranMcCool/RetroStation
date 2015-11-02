@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 using SharpDX.XInput;
 using System.IO;
 
-namespace EmulationStation
+namespace RetroStation
 {
     class ControllerInput
     {

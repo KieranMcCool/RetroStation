@@ -28,7 +28,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmulationStation
+namespace RetroStation
 {
     public class Platform
     {

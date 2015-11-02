@@ -30,7 +30,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace EmulationStation
+namespace RetroStation
 {
     public partial class frmAddPlatform : Form
     {
@@ -83,7 +83,7 @@ namespace EmulationStation
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            Program.addPlatform(new Platform(platformText().Split(',').ToList()));
+            DataManagement.addPlatform(new Platform(platformText().Split(',').ToList()));
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

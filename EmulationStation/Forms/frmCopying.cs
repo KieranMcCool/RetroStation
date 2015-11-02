@@ -30,7 +30,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace EmulationStation
+namespace RetroStation
 {
     public partial class frmCopying : Form
     {

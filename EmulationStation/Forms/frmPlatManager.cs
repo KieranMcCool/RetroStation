@@ -30,7 +30,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace EmulationStation
+namespace RetroStation
 {
     public partial class frmPlatManager : Form
     {
@@ -48,7 +48,7 @@ namespace EmulationStation
         private void reload()
         {
             lvPlatforms.Items.Clear();
-            foreach (var v in Program.Platforms)
+            foreach (var v in DataManagement.Platforms)
             {
                 string[] split = v.getCSVLine().Split(',');
                 lvPlatforms.Items.Add(new ListViewItem(new string[] {
@@ -71,15 +71,15 @@ namespace EmulationStation
         private void btnEdit_Click(object sender, EventArgs e)
         {
             int editing = searchPlatform(lvPlatforms.SelectedItems[0].Text);
-            frmAddPlatform aPlat = new frmAddPlatform(Program.Platforms[editing]);
+            frmAddPlatform aPlat = new frmAddPlatform(DataManagement.Platforms[editing]);
             if(aPlat.ShowDialog() == DialogResult.OK)
-                Program.removePlatform(editing);
+                DataManagement.removePlatform(editing);
             reload();
         }
 
         private int searchPlatform(string fName)
         {
-            return Program.Platforms.IndexOf(Program.Platforms.Find(x =>
+            return DataManagement.Platforms.IndexOf(DataManagement.Platforms.Find(x =>
                 x.getFriendlyName() == fName));
         }
 
@@ -93,7 +93,7 @@ namespace EmulationStation
         private void btnRemove_Click(object sender, EventArgs e)
         {
             int removing = searchPlatform(lvPlatforms.SelectedItems[0].Text);
-            Program.removePlatform(removing);
+            DataManagement.removePlatform(removing);
             reload();
         }
     }
