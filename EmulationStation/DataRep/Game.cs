@@ -35,11 +35,21 @@ namespace RetroStation
         {
             path = _path;
             getInfo(_path);
+            checkPlatform();
         }
 
         public Game(string[] gameInfo)
         {
             addArray(gameInfo);
+            checkPlatform();
+        }
+
+        private void checkPlatform()
+        {
+            if (platform == null)
+                platform = DataManagement.Platforms.Find((p) => 
+                    p.getFriendlyName() == DataManagement.getPlatform(romPath));
+            outputFile(path);
         }
 
         string friendlyName;

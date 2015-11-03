@@ -54,7 +54,7 @@ namespace RetroStation
             }
         }
 
-        private static string[] friendlyPlatName(List<Platform> p)
+        public static string[] friendlyPlatName(List<Platform> p)
         {
             var arr = new string[p.Count];
             int i = 0;
@@ -112,16 +112,15 @@ namespace RetroStation
 
         private static bool platformsCheck()
         {
-            if (File.Exists(platInfoDir))
-                return true;
-            else
+            if (!File.Exists(platInfoDir))
             {
                 MessageBox.Show("No Platforms found.\nPlatform must be created to proceed.");
-                frmAddPlatform addP = new frmAddPlatform();
-                if (addP.ShowDialog() == DialogResult.OK)
-                    return true;
-                return false;
+                frmPlatManager addP = new frmPlatManager();
+                addP.ShowDialog();
+                if (Platforms.Count == 0)
+                    return false;
             }
+            return true;
         }
     }
 }

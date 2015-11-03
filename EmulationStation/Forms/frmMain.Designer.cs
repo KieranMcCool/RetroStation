@@ -51,7 +51,6 @@ namespace RetroStation
         private void InitializeComponent()
         {
             this.lblCredit = new System.Windows.Forms.Label();
-            this.lbGames = new System.Windows.Forms.ListBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addNewRomsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,6 +64,7 @@ namespace RetroStation
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.documentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.spMain = new System.Windows.Forms.SplitContainer();
+            this.lbGames = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.cbPlatform = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -93,19 +93,6 @@ namespace RetroStation
             this.lblCredit.Size = new System.Drawing.Size(130, 13);
             this.lblCredit.TabIndex = 1;
             this.lblCredit.Text = "Created by Kieran McCool";
-            // 
-            // lbGames
-            // 
-            this.lbGames.BackColor = System.Drawing.Color.White;
-            this.lbGames.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbGames.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbGames.FormattingEnabled = true;
-            this.lbGames.ItemHeight = 20;
-            this.lbGames.Location = new System.Drawing.Point(0, 35);
-            this.lbGames.Name = "lbGames";
-            this.lbGames.Size = new System.Drawing.Size(331, 476);
-            this.lbGames.TabIndex = 4;
-            this.lbGames.SelectedIndexChanged += new System.EventHandler(this.lbGames_SelectedIndexChanged);
             // 
             // menuStrip1
             // 
@@ -215,6 +202,17 @@ namespace RetroStation
             this.spMain.Size = new System.Drawing.Size(828, 511);
             this.spMain.SplitterDistance = 331;
             this.spMain.TabIndex = 6;
+            // 
+            // lbGames
+            // 
+            this.lbGames.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbGames.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbGames.FormattingEnabled = true;
+            this.lbGames.ItemHeight = 20;
+            this.lbGames.Location = new System.Drawing.Point(0, 35);
+            this.lbGames.Name = "lbGames";
+            this.lbGames.Size = new System.Drawing.Size(331, 476);
+            this.lbGames.TabIndex = 6;
             // 
             // panel1
             // 
@@ -347,7 +345,6 @@ namespace RetroStation
 
         #endregion
         private System.Windows.Forms.Label lblCredit;
-        private System.Windows.Forms.ListBox lbGames;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
@@ -370,6 +367,7 @@ namespace RetroStation
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnRemove;
         private System.Diagnostics.EventLog eventLog1;
+        private System.Windows.Forms.ListBox lbGames;
     }
 }
 

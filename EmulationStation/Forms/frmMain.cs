@@ -48,7 +48,7 @@ namespace RetroStation
 
             btnPlay.Click += (sender, e) =>
             {
-                int sel = lbGames.SelectedIndex; var p = cbPlatform.SelectedItem; playing = true;
+                int sel = lbGames.SelectedIndices[0]; var p = cbPlatform.SelectedItem; playing = true;
                 DataManagement.Games.Find(x => x.getFriendlyName() == (string)lbGames.SelectedItem).launch();
                 reload(); lbGames.SelectedIndex = sel; cbPlatform.SelectedItem = p; playing = false;
                 playing = false;
@@ -138,18 +138,6 @@ namespace RetroStation
 
         private void BulkFromDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            bool complete = false;
-
-            var thread = Task.Factory.StartNew(() =>
-            {
-                var wait = new frmCopying();
-                wait.Show();
-                while (!complete)
-                    System.Threading.Thread.Sleep(100);
-                wait.Close();
-                wait.Dispose();
-            });
-
             bool move = false;
             if (MessageBox.Show("Do you want to delete the original files?",
                 "Import Options", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -161,20 +149,17 @@ namespace RetroStation
             foreach (string s in Directory.GetFiles(dir, "*"))
             {
                 var fi = new FileInfo(s);
-                var g = new Game("**");
+                Game g;
                 string platform = DataManagement.getPlatform(s);
                 if (platform != null)
                 {
-                    g.addArray(new string[]
+                    g = new Game(new string[]
                     {
                     s, fi.Name.Replace(fi.Extension, "").Replace(".", ""),
                     platform, move.ToString()
                     });
                 }
             }
-
-            complete = true;
-            thread.Wait();
             reload();
         }
 
