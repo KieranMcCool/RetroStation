@@ -23,7 +23,7 @@ namespace RetroStation
                 loadGames();
                 return true;
             }
-            MessageBox.Show("Failed to create initialize program.");
+            MessageBox.Show("Failed to create platforms, terminating...");
             return false;
         }
 
