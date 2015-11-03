@@ -42,7 +42,7 @@ namespace RetroStation
                 Application.Run(new frmMain());
         }
 
-        private static bool updateCheck()
+        public static bool updateToDate()
         {
             var wc = new System.Net.WebClient();
             string version;
@@ -50,10 +50,14 @@ namespace RetroStation
 
             string versionInfoURL = @"https://raw.githubusercontent.com/KieranMcCool/RetroStation/master/Versions/RetroStationLatest/Resources/BuildDate.txt";
             using (var sr = new StreamReader(Environment.CurrentDirectory + @"\Resources\BuildDate.txt"))
-            { version = sr.ReadToEnd(); sr.Close(); sr.Dispose(); }
-            
-            onlineVersion = wc.DownloadString(new Uri(versionInfoURL));
-            return version == onlineVersion;
+            { version = sr.ReadToEnd().Trim();
+                sr.Close(); sr.Dispose(); }
+            try
+            {
+                onlineVersion = wc.DownloadString(new Uri(versionInfoURL)).Trim();
+            }
+            catch { onlineVersion = version; }
+            return version.Equals(onlineVersion);
         }
     }
 }

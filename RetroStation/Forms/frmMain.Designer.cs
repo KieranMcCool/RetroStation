@@ -74,6 +74,7 @@ namespace RetroStation
             this.btnPlay = new System.Windows.Forms.Button();
             this.lblGameName = new System.Windows.Forms.Label();
             this.eventLog1 = new System.Diagnostics.EventLog();
+            this.llUpdate = new System.Windows.Forms.LinkLabel();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spMain)).BeginInit();
             this.spMain.Panel1.SuspendLayout();
@@ -213,6 +214,7 @@ namespace RetroStation
             this.lbGames.Name = "lbGames";
             this.lbGames.Size = new System.Drawing.Size(331, 476);
             this.lbGames.TabIndex = 6;
+            this.lbGames.SelectedIndexChanged += new System.EventHandler(this.lbGames_SelectedIndexChanged);
             // 
             // panel1
             // 
@@ -314,12 +316,26 @@ namespace RetroStation
             // 
             this.eventLog1.SynchronizingObject = this;
             // 
+            // llUpdate
+            // 
+            this.llUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.llUpdate.AutoSize = true;
+            this.llUpdate.Location = new System.Drawing.Point(725, 9);
+            this.llUpdate.Name = "llUpdate";
+            this.llUpdate.Size = new System.Drawing.Size(91, 13);
+            this.llUpdate.TabIndex = 7;
+            this.llUpdate.TabStop = true;
+            this.llUpdate.Text = "Update Available!";
+            this.llUpdate.Visible = false;
+            this.llUpdate.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llUpdate_LinkClicked);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(828, 553);
+            this.Controls.Add(this.llUpdate);
             this.Controls.Add(this.spMain);
             this.Controls.Add(this.lblCredit);
             this.Controls.Add(this.menuStrip1);
@@ -368,6 +384,7 @@ namespace RetroStation
         private System.Windows.Forms.Button btnRemove;
         private System.Diagnostics.EventLog eventLog1;
         private System.Windows.Forms.ListBox lbGames;
+        private System.Windows.Forms.LinkLabel llUpdate;
     }
 }
 

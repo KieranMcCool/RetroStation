@@ -40,6 +40,9 @@ namespace RetroStation
         public frmMain()
         {
             InitializeComponent();
+
+            llUpdate.Visible = !Program.updateToDate();
+
             reload();
 
             this.WindowState = FormWindowState.Maximized;
@@ -212,6 +215,13 @@ namespace RetroStation
             else if (d.TotalSeconds > 1)
                 return ((int)d.TotalSeconds).ToString() + " Seconds | " + LastPlayed.ToShortDateString();
             return "Never Played";
+        }
+
+        private void llUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process p = new System.Diagnostics.Process();
+            p.StartInfo = new System.Diagnostics.ProcessStartInfo("www.github.com/KieranMcCool/RetroStation");
+            p.Start();
         }
     }
 }
