@@ -108,7 +108,12 @@ namespace RetroStation
                     }
             }
             else if (actions.Contains("QUIT"))
-                Program.Play.Kill();
+            {
+                try
+                {
+                    Program.Play.Kill();
+                } catch { }
+            }
         }
     
         bool playing = false;
@@ -200,10 +205,13 @@ namespace RetroStation
         private void lbGames_SelectedIndexChanged(object sender, EventArgs e)
         {
             var game = DataManagement.Games.Find(x => x.getFriendlyName() == (string)lbGames.SelectedItem);
-
-            lblGameName.Text = game.getFriendlyName();
-            label2.Text = FormatTime(new TimeSpan(0, 0, (int)game.getSecondsPlayed()),
-                game.getLastPlayed());
+            try
+            {
+                lblGameName.Text = game.getFriendlyName();
+                label2.Text = FormatTime(new TimeSpan(0, 0, (int)game.getSecondsPlayed()),
+                    game.getLastPlayed());
+            }
+            catch { }
         }
 
         private string FormatTime(TimeSpan d, DateTime LastPlayed)

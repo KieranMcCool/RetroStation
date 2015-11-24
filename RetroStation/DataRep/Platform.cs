@@ -82,7 +82,7 @@ namespace RetroStation
                 StartInfo = new ProcessStartInfo()
                 {
                     WindowStyle = ProcessWindowStyle.Normal,
-                    Arguments = command,
+                    Arguments = command, 
                 }
             };
 
