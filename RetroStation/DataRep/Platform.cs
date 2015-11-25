@@ -91,7 +91,7 @@ namespace RetroStation
                     FileName = emuPath,
                     WorkingDirectory = new FileInfo(emuPath).Directory.FullName,
                     WindowStyle = ProcessWindowStyle.Normal,
-                    Arguments = command,
+                    Arguments = command, 
                 }
             };
 
