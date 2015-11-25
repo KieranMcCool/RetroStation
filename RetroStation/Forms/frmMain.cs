@@ -136,7 +136,7 @@ namespace RetroStation
             cbPlatform.SelectedIndex = 0;
             if (lbGames.Items.Count != 0)
                 lbGames.SelectedIndex = 0;
-            filterBy(null);
+            tbSearch_TextChanged(this, null);
         }
 
         private void BulkFromDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
@@ -166,17 +166,19 @@ namespace RetroStation
             reload();
         }
 
-        private void filterBy(Platform fType)
+        private void filterBy(Platform fType, List<Game> g = null)
         {
+            if (g == null)
+                g = DataManagement.Games;
             lbGames.Items.Clear();
             if (fType == null)
             {
-                foreach (var v in DataManagement.Games)
+                foreach (var v in g)
                     lbGames.Items.Add(v.getFriendlyName());
             }
             else
             {
-                foreach (var v in DataManagement.Games)
+                foreach (var v in g)
                     if (v.getPlatform() == fType)
                         lbGames.Items.Add(v.getFriendlyName());
             }
@@ -187,23 +189,26 @@ namespace RetroStation
             switch (cbPlatform.SelectedIndex)
             {
                 case 0:
-                    filterBy(null);
+                    tbSearch_TextChanged(this, null);
                     break;
                 default:
                     var filterType = DataManagement.Platforms.Find(x => x.getFriendlyName() ==
                         (string)cbPlatform.Items[cbPlatform.SelectedIndex]);
-                    filterBy(filterType);
+                    tbSearch_TextChanged(this, null);
                     break;
             }
         }
 
         private void lbGames_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var game = DataManagement.Games.Find(x => x.getFriendlyName() == (string)lbGames.SelectedItem);
+            if (lbGames.SelectedIndex >= 0 && lbGames.SelectedIndex < lbGames.Items.Count)
+            {
+                var game = DataManagement.Games.Find(x => x.getFriendlyName() == (string)lbGames.SelectedItem);
 
-            lblGameName.Text = game.getFriendlyName();
-            label2.Text = FormatTime(new TimeSpan(0, 0, (int)game.getSecondsPlayed()),
-                game.getLastPlayed());
+                lblGameName.Text = game.getFriendlyName();
+                label2.Text = FormatTime(new TimeSpan(0, 0, (int)game.getSecondsPlayed()),
+                    game.getLastPlayed());
+            }
         }
 
         private string FormatTime(TimeSpan d, DateTime LastPlayed)
@@ -222,6 +227,14 @@ namespace RetroStation
             System.Diagnostics.Process p = new System.Diagnostics.Process();
             p.StartInfo = new System.Diagnostics.ProcessStartInfo("www.github.com/KieranMcCool/RetroStation");
             p.Start();
+        }
+
+        private void tbSearch_TextChanged(object sender, EventArgs e)
+        {
+            var filterPlat = DataManagement.Platforms.Find(x =>
+                x.getFriendlyName() == cbPlatform.Text);
+            filterBy(filterPlat,
+                DataManagement.Games.FindAll(x => x.getFriendlyName().ToUpper().Contains(tbSearch.Text.ToUpper())));
         }
     }
 }

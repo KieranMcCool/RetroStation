@@ -50,7 +50,6 @@ namespace RetroStation
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblCredit = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addNewRomsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +63,10 @@ namespace RetroStation
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.documentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.spMain = new System.Windows.Forms.SplitContainer();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.btnClearSearch = new System.Windows.Forms.Button();
+            this.tbSearch = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.lbGames = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.cbPlatform = new System.Windows.Forms.ComboBox();
@@ -80,20 +83,11 @@ namespace RetroStation
             this.spMain.Panel1.SuspendLayout();
             this.spMain.Panel2.SuspendLayout();
             this.spMain.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.pnlGameInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // lblCredit
-            // 
-            this.lblCredit.AutoSize = true;
-            this.lblCredit.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lblCredit.Location = new System.Drawing.Point(0, 540);
-            this.lblCredit.Name = "lblCredit";
-            this.lblCredit.Size = new System.Drawing.Size(130, 13);
-            this.lblCredit.TabIndex = 1;
-            this.lblCredit.Text = "Created by Kieran McCool";
             // 
             // menuStrip1
             // 
@@ -193,6 +187,7 @@ namespace RetroStation
             // 
             // spMain.Panel1
             // 
+            this.spMain.Panel1.Controls.Add(this.panel2);
             this.spMain.Panel1.Controls.Add(this.lbGames);
             this.spMain.Panel1.Controls.Add(this.panel1);
             // 
@@ -200,9 +195,55 @@ namespace RetroStation
             // 
             this.spMain.Panel2.BackColor = System.Drawing.Color.Transparent;
             this.spMain.Panel2.Controls.Add(this.pnlGameInfo);
-            this.spMain.Size = new System.Drawing.Size(828, 511);
+            this.spMain.Size = new System.Drawing.Size(828, 524);
             this.spMain.SplitterDistance = 331;
             this.spMain.TabIndex = 6;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.btnClearSearch);
+            this.panel2.Controls.Add(this.tbSearch);
+            this.panel2.Controls.Add(this.label3);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(0, 492);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(331, 32);
+            this.panel2.TabIndex = 7;
+            // 
+            // btnClearSearch
+            // 
+            this.btnClearSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClearSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClearSearch.ForeColor = System.Drawing.Color.Black;
+            this.btnClearSearch.Location = new System.Drawing.Point(302, 3);
+            this.btnClearSearch.Name = "btnClearSearch";
+            this.btnClearSearch.Size = new System.Drawing.Size(26, 26);
+            this.btnClearSearch.TabIndex = 2;
+            this.btnClearSearch.Text = "X";
+            this.btnClearSearch.UseVisualStyleBackColor = true;
+            // 
+            // tbSearch
+            // 
+            this.tbSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbSearch.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.tbSearch.Location = new System.Drawing.Point(55, 3);
+            this.tbSearch.Name = "tbSearch";
+            this.tbSearch.Size = new System.Drawing.Size(247, 26);
+            this.tbSearch.TabIndex = 1;
+            this.tbSearch.TextChanged += new System.EventHandler(this.tbSearch_TextChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label3.Location = new System.Drawing.Point(-4, 6);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(64, 20);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Search:";
             // 
             // lbGames
             // 
@@ -212,7 +253,7 @@ namespace RetroStation
             this.lbGames.ItemHeight = 20;
             this.lbGames.Location = new System.Drawing.Point(0, 35);
             this.lbGames.Name = "lbGames";
-            this.lbGames.Size = new System.Drawing.Size(331, 476);
+            this.lbGames.Size = new System.Drawing.Size(331, 489);
             this.lbGames.TabIndex = 6;
             this.lbGames.SelectedIndexChanged += new System.EventHandler(this.lbGames_SelectedIndexChanged);
             // 
@@ -263,7 +304,7 @@ namespace RetroStation
             this.pnlGameInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlGameInfo.Location = new System.Drawing.Point(0, 0);
             this.pnlGameInfo.Name = "pnlGameInfo";
-            this.pnlGameInfo.Size = new System.Drawing.Size(493, 511);
+            this.pnlGameInfo.Size = new System.Drawing.Size(493, 524);
             this.pnlGameInfo.TabIndex = 0;
             // 
             // label2
@@ -282,7 +323,7 @@ namespace RetroStation
             this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRemove.BackColor = System.Drawing.Color.LightCoral;
             this.btnRemove.ForeColor = System.Drawing.Color.Black;
-            this.btnRemove.Location = new System.Drawing.Point(388, 443);
+            this.btnRemove.Location = new System.Drawing.Point(388, 456);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(93, 56);
             this.btnRemove.TabIndex = 2;
@@ -294,7 +335,7 @@ namespace RetroStation
             this.btnPlay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnPlay.BackColor = System.Drawing.Color.LightBlue;
             this.btnPlay.ForeColor = System.Drawing.Color.Black;
-            this.btnPlay.Location = new System.Drawing.Point(16, 443);
+            this.btnPlay.Location = new System.Drawing.Point(16, 456);
             this.btnPlay.Name = "btnPlay";
             this.btnPlay.Size = new System.Drawing.Size(93, 56);
             this.btnPlay.TabIndex = 1;
@@ -337,7 +378,6 @@ namespace RetroStation
             this.ClientSize = new System.Drawing.Size(828, 553);
             this.Controls.Add(this.llUpdate);
             this.Controls.Add(this.spMain);
-            this.Controls.Add(this.lblCredit);
             this.Controls.Add(this.menuStrip1);
             this.ForeColor = System.Drawing.SystemColors.Control;
             this.MainMenuStrip = this.menuStrip1;
@@ -349,6 +389,8 @@ namespace RetroStation
             this.spMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.spMain)).EndInit();
             this.spMain.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.pnlGameInfo.ResumeLayout(false);
@@ -360,7 +402,6 @@ namespace RetroStation
         }
 
         #endregion
-        private System.Windows.Forms.Label lblCredit;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
@@ -385,6 +426,10 @@ namespace RetroStation
         private System.Diagnostics.EventLog eventLog1;
         private System.Windows.Forms.ListBox lbGames;
         private System.Windows.Forms.LinkLabel llUpdate;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button btnClearSearch;
+        private System.Windows.Forms.TextBox tbSearch;
+        private System.Windows.Forms.Label label3;
     }
 }
 

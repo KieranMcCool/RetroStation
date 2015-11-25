@@ -77,15 +77,6 @@ namespace RetroStation
             var game = new FileInfo(Game.getRomPath());
             string command = string.Format(this.getCommandTemplate(), game.FullName);
 
-            Program.Play = new Process()
-            {
-                StartInfo = new ProcessStartInfo()
-                {
-                    WindowStyle = ProcessWindowStyle.Normal,
-                    Arguments = command,
-                }
-            };
-
             string emuPath;
 
             if (File.Exists(Environment.CurrentDirectory + this.getEmulatorPath()))
@@ -93,11 +84,19 @@ namespace RetroStation
             else
                 emuPath = this.getEmulatorPath();
 
-            Program.Play.StartInfo.FileName = emuPath;
-            Program.Play.StartInfo.WorkingDirectory = new FileInfo(emuPath).Directory.FullName;
+            Program.Play = new Process()
+            {
+                StartInfo = new ProcessStartInfo()
+                {
+                    FileName = emuPath,
+                    WorkingDirectory = new FileInfo(emuPath).Directory.FullName,
+                    WindowStyle = ProcessWindowStyle.Normal,
+                    Arguments = command,
+                }
+            };
 
-            Program.Play.Start();
             var startTime = DateTime.Now;
+            Program.Play.Start();
             Program.Play.WaitForExit();
             Game.registerTime(DateTime.Now, (int)DateTime.Now.Subtract(startTime).TotalSeconds);
         }
