@@ -63,6 +63,7 @@ namespace RetroStation
                 var dia = new frmAddGameDia();
                 if (dia.ShowDialog() == DialogResult.OK)
                     DataManagement.Games.Add(new Game(dia.results));
+                reload();
             };
 
             managePlatformsToolStripMenuItem.Click += (sender, e) => {
@@ -112,6 +113,7 @@ namespace RetroStation
                 try
                 {
                     Program.Play.Kill();
+                    playing = false;
                 } catch { }
             }
         }
