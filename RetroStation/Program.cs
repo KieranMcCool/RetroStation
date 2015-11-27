@@ -57,7 +57,7 @@ namespace RetroStation
                 onlineVersion = wc.DownloadString(new Uri(versionInfoURL)).Trim();
             }
             catch { onlineVersion = version; }
-            return version.Equals(onlineVersion);
+            return DateTime.Parse(onlineVersion) < DateTime.Parse(version);
         }
     }
 }
