@@ -165,8 +165,8 @@ namespace RetroStation
                 {
                     g = new Game(new string[]
                     {
-                    s, fi.Name.Replace(fi.Extension, "").Replace(".", ""),
-                    platform, move.ToString()
+                        s, fi.Name.Replace(fi.Extension, "").Replace(".", ""),
+                        platform, move.ToString()
                     });
                 }
             }

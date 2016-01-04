@@ -74,7 +74,7 @@ namespace RetroStation
             var s = tbDir.Text.Replace(Environment.CurrentDirectory.ToString(), "");
             sb.Append(s + ",");
             sb.Append(tbCLI.Text + ",");
-            for (int i = 0; i < lbExtensions.Items.Count - 2; i++)
+            for (int i = 0; i < lbExtensions.Items.Count - 1; i++)
                 sb.Append((string)lbExtensions.Items[i] + ",");
             sb.Append(lbExtensions.Items[lbExtensions.Items.Count - 1]);
             return sb.ToString();

@@ -49,7 +49,8 @@ namespace RetroStation
             if (platform == null)
                 platform = DataManagement.Platforms.Find((p) => 
                     p.getFriendlyName() == DataManagement.getPlatform(romPath));
-            outputFile(path);
+            if(platform != null)
+                outputFile(path);
         }
 
         string friendlyName;
