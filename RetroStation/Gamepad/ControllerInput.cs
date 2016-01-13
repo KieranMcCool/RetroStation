@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using SharpDX.XInput;
 using System.IO;
@@ -35,6 +34,8 @@ namespace RetroStation
         public ControllerInput()
         {
             readActions();
+            // If we try to take controller input too soon, steam big picture wont work.
+            System.Threading.Thread.Sleep(100);
             Task.Factory.StartNew(mainLoop);
         }
 

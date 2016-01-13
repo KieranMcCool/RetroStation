@@ -187,8 +187,8 @@ namespace RetroStation
             // 
             // spMain.Panel1
             // 
-            this.spMain.Panel1.Controls.Add(this.panel2);
             this.spMain.Panel1.Controls.Add(this.lbGames);
+            this.spMain.Panel1.Controls.Add(this.panel2);
             this.spMain.Panel1.Controls.Add(this.panel1);
             // 
             // spMain.Panel2
@@ -232,7 +232,6 @@ namespace RetroStation
             this.tbSearch.Name = "tbSearch";
             this.tbSearch.Size = new System.Drawing.Size(247, 26);
             this.tbSearch.TabIndex = 1;
-            this.tbSearch.TextChanged += new System.EventHandler(this.tbSearch_TextChanged);
             // 
             // label3
             // 
@@ -253,7 +252,7 @@ namespace RetroStation
             this.lbGames.ItemHeight = 20;
             this.lbGames.Location = new System.Drawing.Point(0, 35);
             this.lbGames.Name = "lbGames";
-            this.lbGames.Size = new System.Drawing.Size(331, 489);
+            this.lbGames.Size = new System.Drawing.Size(331, 457);
             this.lbGames.TabIndex = 6;
             this.lbGames.SelectedIndexChanged += new System.EventHandler(this.lbGames_SelectedIndexChanged);
             // 
@@ -280,7 +279,6 @@ namespace RetroStation
             this.cbPlatform.Name = "cbPlatform";
             this.cbPlatform.Size = new System.Drawing.Size(159, 28);
             this.cbPlatform.TabIndex = 1;
-            this.cbPlatform.SelectedIndexChanged += new System.EventHandler(this.cbPlatform_SelectedIndexChanged);
             // 
             // label1
             // 

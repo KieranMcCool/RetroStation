@@ -35,44 +35,71 @@ namespace RetroStation
 {
     public partial class frmMain : Form
     {
-        ControllerInput ci = new ControllerInput();
-
+        // Instantiates the wrapper class that deals with controller input.
+        ControllerInput controllerInput = new ControllerInput();
+        // Keep track of if we're playing or not
+        bool playing = false;
         public frmMain()
         {
             InitializeComponent();
-
+            // inform user of update availability if needed.
             llUpdate.Visible = !Program.updateToDate();
-
-            reload();
-
+            
+            // Maxmise window.
             this.WindowState = FormWindowState.Maximized;
 
-            ci.ButtonPressed += Ci_ButtonPressed;
+            // Code Below sets up action listeners for Control interactions
 
+            // Setup the listener for controller input
+            controllerInput.ButtonPressed += Ci_ButtonPressed;
+
+            // Sets playing to true and lanches the selected game. Waits for close and then sets playing to false.
             btnPlay.Click += (sender, e) =>
             {
-                int sel = lbGames.SelectedIndices[0]; var p = cbPlatform.SelectedItem; playing = true;
-                DataManagement.Games.Find(x => x.getFriendlyName() == (string)lbGames.SelectedItem).launch();
-                reload(); lbGames.SelectedIndex = sel; cbPlatform.SelectedItem = p; playing = false;
-                playing = false;
+                if (lbGames.SelectedIndex >= 0 && lbGames.SelectedIndex < lbGames.Items.Count)
+                {
+                    int sel = lbGames.SelectedIndices[0]; var p = cbPlatform.SelectedItem; playing = true;
+                    DataManagement.Games.Find(x => x.getFriendlyName() == (string)lbGames.SelectedItem).launch();
+                    reload(); lbGames.SelectedIndex = sel; cbPlatform.SelectedItem = p; playing = false;
+                    playing = false;
+                }
             };
 
             bulkFromDirectoryToolStripMenuItem.Click += BulkFromDirectoryToolStripMenuItem_Click;
+            // Action Listener for the bulk rom import option 
             fromFileToolStripMenuItem.Click += (sender, e) =>
             {
                 var dia = new frmAddGameDia();
+                // Get the data for ROM Import from the add game dialog.   
                 if (dia.ShowDialog() == DialogResult.OK)
                     DataManagement.Games.Add(new Game(dia.results));
+                // Reload the UI to reflect changes.
                 reload();
             };
 
+            // Code to open the platform manager when the appropriate button is clicked (File -> Manage Platforms)
             managePlatformsToolStripMenuItem.Click += (sender, e) => {
                 frmPlatManager fp = new frmPlatManager();
                 fp.ShowDialog();  reload(); };
+
+            // Code which changes the games shown based on filter and search settings
+            Action FilterChange = () => {
+                filterBy(DataManagement.Platforms.Find(x => x.getFriendlyName() == cbPlatform.Text),
+                    DataManagement.Games.FindAll(x => x.getFriendlyName().ToLower().Contains(tbSearch.Text.ToLower())));
+            };
+
+            // Calls the FilterChange code when required.
+            cbPlatform.SelectedIndexChanged += (sender, e) => { FilterChange(); };
+            tbSearch.TextChanged += (sender, e) => { FilterChange(); };
+
+            // Updates all UI Elements
+            reload();
         }
 
         private void Ci_ButtonPressed(string[] actions, string[] buttonsPressed)
         {
+            /* This action takes two parameters, an object (casted to either a listbox or combobox)
+               and  moves its selected index by the integer argument */
             var cycleSelected = new Action<object, int>((s, i) => {
                 if(s  is ListBox)
                 {
@@ -85,8 +112,10 @@ namespace RetroStation
                     contextS.SelectedIndex = pyMod(contextS.SelectedIndex + i, contextS.Items.Count)));
                 }
             });
+            // if not in game
             if (!playing)
             {
+                // Check actions received to see if we have to do anything
                 foreach (var action in actions)
                     switch (action)
                     {
@@ -108,61 +137,85 @@ namespace RetroStation
                             break;
                     }
             }
+            // if we're in game and the quit action is received
             else if (actions.Contains("QUIT"))
             {
                 try
                 {
+                    // Kill the running emulation.
                     Program.Play.Kill();
                     playing = false;
                 } catch { }
             }
         }
-    
-        bool playing = false;
 
         private int pyMod(int a, int b)
-        {
+        {   
+            // .net's mod function sucks, this is how python does it.
             return ((a % b) + b) % b;
         }
 
         private void reload()
         {
+            // Reload game and platform information
             DataManagement.loadSupported();
             DataManagement.loadGames();
-
+            // Clear game list and platform list
             lbGames.Items.Clear();
             cbPlatform.Items.Clear();
-
+            // Add an all filter for platforms
             cbPlatform.Items.Add("All");
-
+            
+            // Foreach platform, add to platform filters
             foreach (var p in DataManagement.Platforms)
             {
                 cbPlatform.Items.Add(p.getFriendlyName());
             }
 
+            /// set the platform filter to all
             cbPlatform.SelectedIndex = 0;
+            // If there's games, update the selected game to game 0 for controller to work.
             if (lbGames.Items.Count != 0)
                 lbGames.SelectedIndex = 0;
-            tbSearch_TextChanged(this, null);
+            // Remove all search parameters.
+            tbSearch.Text = "";
+
+            // Update Game display.
+            filterBy(DataManagement.Platforms.Find(x => x.getFriendlyName() == cbPlatform.Text),
+                    DataManagement.Games.FindAll(x => x.getFriendlyName().ToLower().Contains(tbSearch.Text.ToLower())));
+
         }
 
         private void BulkFromDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Init move as false - Let's not delete the originals without permission ;)
             bool move = false;
+            // As for permission to delete originals (move is way quicker than just a raw copy.)
             if (MessageBox.Show("Do you want to delete the original files?",
                 "Import Options", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                // if yes, set move to true/
                 move = true;
+
+            // Initialise a folder browser dialog to get a directory to import form.
             var dia = new FolderBrowserDialog();
             string dir = "";
+            // dir = selected dir
             if (dia.ShowDialog() == DialogResult.OK)
                 dir = dia.SelectedPath;
+
+            // Foreach file in the selected directory
             foreach (string s in Directory.GetFiles(dir, "*"))
             {
+                // get info on file
                 var fi = new FileInfo(s);
+                // init a new game
                 Game g;
+                // Get the platform for it.
                 string platform = DataManagement.getPlatform(s);
+                // If we found one
                 if (platform != null)
                 {
+                    // create a new game
                     g = new Game(new string[]
                     {
                         s, fi.Name.Replace(fi.Extension, "").Replace(".", ""),
@@ -170,46 +223,40 @@ namespace RetroStation
                     });
                 }
             }
+            // reloads all UI elements.
             reload();
         }
 
-        private void filterBy(Platform fType, List<Game> g = null)
+        private void filterBy(Platform fType = null, List<Game> g = null)
         {
+            // if we don't have a game list to filter by
             if (g == null)
+                // use all games as game list
                 g = DataManagement.Games;
+            // Clear the items already in the list
             lbGames.Items.Clear();
+            // If no filter type
             if (fType == null)
             {
+                // add every game
                 foreach (var v in g)
                     lbGames.Items.Add(v.getFriendlyName());
             }
             else
             {
+                // add only games from the game list which satisfy the filter type.
                 foreach (var v in g)
                     if (v.getPlatform() == fType)
                         lbGames.Items.Add(v.getFriendlyName());
             }
         }
 
-        private void cbPlatform_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch (cbPlatform.SelectedIndex)
-            {
-                case 0:
-                    tbSearch_TextChanged(this, null);
-                    break;
-                default:
-                    var filterType = DataManagement.Platforms.Find(x => x.getFriendlyName() ==
-                        (string)cbPlatform.Items[cbPlatform.SelectedIndex]);
-                    tbSearch_TextChanged(this, null);
-                    break;
-            }
-        }
-
         private void lbGames_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // if valid game selected
             if (lbGames.SelectedIndex >= 0 && lbGames.SelectedIndex < lbGames.Items.Count)
             {
+                // Get info on game and display.
                 var game = DataManagement.Games.Find(x => x.getFriendlyName() == (string)lbGames.SelectedItem);
                 try
                 {
@@ -223,6 +270,7 @@ namespace RetroStation
 
         private string FormatTime(TimeSpan d, DateTime LastPlayed)
         {
+            // Picks the most appropriate time scale to display time played in.
             if (d.TotalHours > 1)
                 return ((int)d.TotalHours).ToString() + " Hours | " + LastPlayed.ToShortDateString();
             else if (d.TotalMinutes > 1)
@@ -234,17 +282,10 @@ namespace RetroStation
 
         private void llUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            // Starts a web browser to show the download page of the project. 
             System.Diagnostics.Process p = new System.Diagnostics.Process();
             p.StartInfo = new System.Diagnostics.ProcessStartInfo("www.github.com/KieranMcCool/RetroStation");
             p.Start();
-        }
-
-        private void tbSearch_TextChanged(object sender, EventArgs e)
-        {
-            var filterPlat = DataManagement.Platforms.Find(x =>
-                x.getFriendlyName() == cbPlatform.Text);
-            filterBy(filterPlat,
-                DataManagement.Games.FindAll(x => x.getFriendlyName().ToUpper().Contains(tbSearch.Text.ToUpper())));
         }
     }
 }
